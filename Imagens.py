@@ -1,0 +1,41 @@
+import os
+import numpy as np
+from PIL import Image
+from enum import Enum
+
+class TipoImagem(Enum):
+    treino = 1
+    teste = 2
+
+class Imagens():
+
+    # Crie listas para armazenar as imagens e rótulos
+    def Formata_imagem_e_rotulos(self, diretorio_raiz, tipoImagem):
+        imagens = []
+        rotulos = []
+
+        # Itere sobre as pastas (cada pasta representa uma classe)
+        for classe in os.listdir(diretorio_raiz):
+            pasta_da_classe = os.path.join(diretorio_raiz, classe)
+            if os.path.isdir(pasta_da_classe):
+                for arquivo in os.listdir(pasta_da_classe):
+                    if arquivo.endswith('.png'):
+                        caminho_da_imagem = os.path.join(pasta_da_classe, arquivo)
+                        imagem = Image.open(caminho_da_imagem)
+                        imagem = imagem.resize((28, 28))  # Redimensione para 28x28 se necessário
+                        imagem_array = np.array(imagem)
+                        imagens.append(imagem_array)
+                        rotulos.append(classe)
+
+        # Converta as listas em matrizes NumPy
+        imagens = np.array(imagens)
+        rotulos = np.array(rotulos)
+
+        # Salvando na pasta devida
+        if(tipoImagem == TipoImagem.treino):
+            np.save(r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\letras\train_images\formatoNumpy\train_images_npy', imagens)
+            np.save(r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\letras\train_labels\formatoNumpy\train_labels_npy', rotulos)
+        elif(tipoImagem == TipoImagem.teste):
+            np.save(r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\letras\test_images\formatoNumpy\test_images_npy', imagens)
+            np.save(r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\letras\test_labels\formatoNumpy\test_labels_npy', rotulos)
+
