@@ -1,8 +1,6 @@
-import tensorflow as tf
-from keras import layers, models
-from keras.datasets import mnist
-import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.pyplot as plt
+from keras import layers, models
 from Imagens import Imagens, TipoImagem
 
 # Pega os diretórios onde estão localizadas as pastas de treino e teste para formatá-las no modelo correto
@@ -28,9 +26,9 @@ print(len(test_labels))
 
 # Pré-processamento dos dados (transforma em tons de cinza, dps garante a dimensão da imagem)
 train_images = np.mean(train_images, axis=-1, keepdims=True)
-train_images = train_images.reshape((1009, 28, 28, 1))
+train_images = train_images.reshape((6488, 28, 28, 1))
 test_images = np.mean(test_images, axis=-1, keepdims=True)
-test_images  = test_images.reshape((512, 28, 28, 1))
+test_images = test_images.reshape((2452, 28, 28, 1))
 train_images, test_images = train_images / 255.0, test_images / 255.0
 
 train_labels = train_labels.astype(int)
@@ -45,7 +43,7 @@ model.add(layers.MaxPooling2D((2, 2)))
 model.add(layers.Conv2D(64, (3, 3), activation='relu'))
 model.add(layers.Flatten())
 model.add(layers.Dense(64, activation='relu'))
-model.add(layers.Dense(10, activation='softmax'))
+model.add(layers.Dense(27, activation='softmax'))
 
 # Compilar o modelo
 model.compile(optimizer='adam',
@@ -78,4 +76,4 @@ plt.legend()
 
 plt.show()
 
-model.save(r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\tcc_7_sem\tcc_8_sem\model_letra_teste.h5')
+model.save(r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\Projeto_TCC\RedeNeural\model_letra_teste2.h5')

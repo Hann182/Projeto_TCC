@@ -27,6 +27,7 @@ class Imagens():
                         imagens.append(imagem_array)
                         rotulos.append(classe)
 
+
         # Converta as listas em matrizes NumPy
         imagens = np.array(imagens)
         rotulos = np.array(rotulos)
