@@ -1,7 +1,7 @@
 import sqlite3
 
 class Sqlite_DB:
-    def init(self, banco = None): # Cria banco de dados
+    def init(self, banco = None): # Cria Banco de dados
         self.conn = None
         self.cursor = None
 

@@ -12,7 +12,7 @@ sys.path.insert(1, './view')
 
 from View.TelaLogin import *
 from Cadastrar import Cadastro
-from Repositories.banco.Query import Sqlite_DB
+from Repositories.Banco.Query import Sqlite_DB
 from View.TelaInterativa import Window
 
 class Login(QDialog):

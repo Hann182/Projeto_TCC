@@ -1,11 +1,18 @@
+import os
+
 import numpy as np
 import matplotlib.pyplot as plt
 from keras import layers, models
 from Imagens import Imagens, TipoImagem
 
 # Pega os diretórios onde estão localizadas as pastas de treino e teste para formatá-las no modelo correto
-dir_imagem_treino = r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\letras\train_images\formatoPNG'
-dir_imagem_teste = r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\letras\test_images\formatoPNG'
+caminhoTreinoImagens = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories', 'ImagensDaRedeNeural', 'train_images')
+caminhoTesteImagens = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories', 'ImagensDaRedeNeural', 'test_images')
+caminhoTreinoLabels = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories', 'ImagensDaRedeNeural', 'train_labels')
+caminhoTesteLabels = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories', 'ImagensDaRedeNeural', 'test_labels')
+
+dir_imagem_treino = os.path.join(caminhoTreinoImagens, 'formatoPNG')
+dir_imagem_teste = os.path.join(caminhoTesteImagens, 'formatoPNG')
 
 imagens = Imagens()
 
@@ -14,15 +21,15 @@ imagens.Formata_imagem_e_rotulos(dir_imagem_teste, TipoImagem.teste)
 
 
 # Pega as imagens do tipo npy e as carrega para dentro de variáveis
-imagens_treino = np.load(r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\letras\train_images\formatoNumpy\train_images_npy.npy')
-labels_treino = np.load(r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\letras\train_labels\formatoNumpy\train_labels_npy.npy')
-imagens_teste = np.load(r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\letras\test_images\formatoNumpy\test_images_npy.npy')
-labels_teste = np.load(r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\letras\test_labels\formatoNumpy\test_labels_npy.npy')
+imagens_treino = np.load(os.path.join(caminhoTreinoImagens, 'formatoNumpy', 'train_images_npy.npy'))
+labels_treino = np.load(os.path.join(caminhoTreinoLabels, 'formatoNumpy', 'train_labels_npy.npy'))
+imagens_teste = np.load(os.path.join(caminhoTesteImagens, 'formatoNumpy', 'test_images_npy.npy'))
+labels_teste = np.load(os.path.join(caminhoTesteLabels, 'formatoNumpy', 'test_labels_npy.npy'))
 
-print(len(imagens_treino))
+'''print(len(imagens_treino))
 print(len(labels_treino))
 print(len(imagens_teste))
-print(len(labels_teste))
+print(len(labels_teste))'''
 
 # Pré-processamento dos dados (transforma em tons de cinza, dps garante a dimensão da imagem)
 imagens_treino = np.mean(imagens_treino, axis=-1, keepdims=True)
@@ -76,4 +83,4 @@ plt.legend()
 
 plt.show()
 
-modelo.save(r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\Projeto_TCC\RedeNeural\model_letra_teste.h5')
+modelo.save(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'RedeNeural', 'model_letra_teste.h5'))

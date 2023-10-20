@@ -11,7 +11,7 @@ import os, sys
 sys.path.insert(1, './view')
 
 from View.Cadastro import *
-from Repositories.banco.Query import Sqlite_DB
+from Repositories.Banco.Query import Sqlite_DB
 
 class Cadastro(QDialog):
     def __init__(self, *args, **argvs):

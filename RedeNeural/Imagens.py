@@ -9,6 +9,11 @@ class TipoImagem(Enum):
 
 class Imagens():
 
+    caminhoTreinoImagens = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories', 'ImagensDaRedeNeural', 'train_images')
+    caminhoTesteImagens = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories', 'ImagensDaRedeNeural', 'test_images')
+    caminhoTreinoLabels = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories','ImagensDaRedeNeural', 'train_labels')
+    caminhoTesteLabels = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories', 'ImagensDaRedeNeural', 'test_labels')
+
     # Crie listas para armazenar as imagens e rótulos
     def Formata_imagem_e_rotulos(self, diretorio_raiz, tipoImagem):
         imagens = []
@@ -34,9 +39,10 @@ class Imagens():
 
         # Salvando na pasta devida
         if(tipoImagem == TipoImagem.treino):
-            np.save(r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\letras\train_images\formatoNumpy\train_images_npy', imagens)
-            np.save(r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\letras\train_labels\formatoNumpy\train_labels_npy', rotulos)
+            np.save(os.path.join(Imagens.caminhoTreinoImagens, 'formatoNumpy', 'train_images_npy'), imagens)
+            np.save(os.path.join(Imagens.caminhoTreinoLabels, 'formatoNumpy', 'train_labels_npy'), rotulos)
+
         elif(tipoImagem == TipoImagem.teste):
-            np.save(r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\letras\test_images\formatoNumpy\test_images_npy', imagens)
-            np.save(r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\letras\test_labels\formatoNumpy\test_labels_npy', rotulos)
+            np.save(os.path.join(Imagens.caminhoTesteImagens, 'formatoNumpy', 'test_images_npy'), imagens)
+            np.save(os.path.join(Imagens.caminhoTesteLabels, 'formatoNumpy', 'test_labels_npy'), rotulos)
 
