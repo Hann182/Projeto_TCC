@@ -12,8 +12,8 @@ sys.path.insert(1, './view')
 
 from View.TelaLogin import *
 from Cadastrar import Cadastro
-from banco.query import sqlite_db
-from View.Paint import Window
+from Repositories.banco.Query import Sqlite_DB
+from View.TelaInterativa import Window
 
 class Login(QDialog):
     def __init__(self, *args, **argvs):
@@ -25,7 +25,7 @@ class Login(QDialog):
         self.ui.btnApagar.clicked.connect(self.limpar)
         
     def login(self):
-        db = sqlite_db("usuarios_cadastrados.db")
+        db = Sqlite_DB("usuarios_cadastrados.db")
 
         user = self.ui.imName.text()
         passd = self.ui.ImPassword.text()

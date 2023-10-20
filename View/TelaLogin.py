@@ -107,7 +107,7 @@ class Ui_Login(object):
         self.label_6.setText(QCoreApplication.translate("Login", u"<html><head/><body><p align=\"center\"><span style=\"font-size:14pt; font-weight:600;\">LOGIN</span></p></body></html>", None))
         self.btnCadasto.setText(QCoreApplication.translate("Login", u"Cadastro", None))
         self.label_4.setText(QCoreApplication.translate("Login", u"<html><head/><body><p><br/></p></body></html>", None))
-        self.label_5.setText(QCoreApplication.translate("Login", u"<html><head/><body><p><img src=\"./icons/download.png\"/></p></body></html>", None))
+        self.label_5.setText(QCoreApplication.translate("Login", u"<html><head/><body><p><img src=\"./Imagens/download.png\"/></p></body></html>", None))
         self.label_7.setText(QCoreApplication.translate("Login", u"<html><head/><body><p>Usu\u00e1rio</p></body></html>", None))
         self.label_8.setText(QCoreApplication.translate("Login", u"<html><head/><body><p>Senha</p></body></html>", None))
         self.label_9.setText(QCoreApplication.translate("Login", u"<html><head/><body><p align=\"center\"><span style=\" font-size:14pt; font-weight:600;\">Entre em um mundo divertido e</span></p><p align=\"center\"><span style=\" font-size:14pt; font-weight:600;\">eficaz de aprendizado de escrita, de</span></p><p align=\"center\"><span style=\" font-size:14pt; font-weight:600;\">forma gratuita!</span></p></body></html>", None))

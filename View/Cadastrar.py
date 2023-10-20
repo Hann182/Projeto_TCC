@@ -11,7 +11,7 @@ import os, sys
 sys.path.insert(1, './view')
 
 from View.Cadastro import *
-from banco.query import sqlite_db
+from Repositories.banco.Query import Sqlite_DB
 
 class Cadastro(QDialog):
     def __init__(self, *args, **argvs):
@@ -22,7 +22,7 @@ class Cadastro(QDialog):
         self.ui.btnLimpar.clicked.connect(self.limpa)
 
     def add(self):
-        db = sqlite_db("./repositories/usuarios_cadastrados.db")
+        db = Sqlite_DB("./repositories/usuarios_cadastrados.db")
        
         name = self.ui.imName.text()
         passd = self.ui.imPass.text()

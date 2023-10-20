@@ -14,66 +14,66 @@ imagens.Formata_imagem_e_rotulos(dir_imagem_teste, TipoImagem.teste)
 
 
 # Pega as imagens do tipo npy e as carrega para dentro de variáveis
-train_images = np.load(r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\letras\train_images\formatoNumpy\train_images_npy.npy')
-train_labels = np.load(r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\letras\train_labels\formatoNumpy\train_labels_npy.npy')
-test_images = np.load(r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\letras\test_images\formatoNumpy\test_images_npy.npy')
-test_labels = np.load(r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\letras\test_labels\formatoNumpy\test_labels_npy.npy')
+imagens_treino = np.load(r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\letras\train_images\formatoNumpy\train_images_npy.npy')
+labels_treino = np.load(r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\letras\train_labels\formatoNumpy\train_labels_npy.npy')
+imagens_teste = np.load(r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\letras\test_images\formatoNumpy\test_images_npy.npy')
+labels_teste = np.load(r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\letras\test_labels\formatoNumpy\test_labels_npy.npy')
 
-print(len(train_images))
-print(len(train_labels))
-print(len(test_images))
-print(len(test_labels))
+print(len(imagens_treino))
+print(len(labels_treino))
+print(len(imagens_teste))
+print(len(labels_teste))
 
 # Pré-processamento dos dados (transforma em tons de cinza, dps garante a dimensão da imagem)
-train_images = np.mean(train_images, axis=-1, keepdims=True)
-train_images = train_images.reshape((6488, 28, 28, 1))
-test_images = np.mean(test_images, axis=-1, keepdims=True)
-test_images = test_images.reshape((2452, 28, 28, 1))
-train_images, test_images = train_images / 255.0, test_images / 255.0
+imagens_treino = np.mean(imagens_treino, axis=-1, keepdims=True)
+imagens_treino = imagens_treino.reshape((6488, 28, 28, 1))
+imagens_teste = np.mean(imagens_teste, axis=-1, keepdims=True)
+imagens_teste = imagens_teste.reshape((2655, 28, 28, 1))
+imagens_treino, imagens_teste = imagens_treino / 255.0, imagens_teste / 255.0
 
-train_labels = train_labels.astype(int)
-test_labels = test_labels.astype(int)
+labels_treino = labels_treino.astype(int)
+labels_teste = labels_teste.astype(int)
 
 # Construir o modelo da rede neural
-model = models.Sequential()
-model.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)))
-model.add(layers.MaxPooling2D((2, 2)))
-model.add(layers.Conv2D(64, (3, 3), activation='relu'))
-model.add(layers.MaxPooling2D((2, 2)))
-model.add(layers.Conv2D(64, (3, 3), activation='relu'))
-model.add(layers.Flatten())
-model.add(layers.Dense(64, activation='relu'))
-model.add(layers.Dense(27, activation='softmax'))
+modelo = models.Sequential()
+modelo.add(layers.Conv2D(32, (3, 3), activation='relu', input_shape=(28, 28, 1)))
+modelo.add(layers.MaxPooling2D((2, 2)))
+modelo.add(layers.Conv2D(64, (3, 3), activation='relu'))
+modelo.add(layers.MaxPooling2D((2, 2)))
+modelo.add(layers.Conv2D(64, (3, 3), activation='relu'))
+modelo.add(layers.Flatten())
+modelo.add(layers.Dense(64, activation='relu'))
+modelo.add(layers.Dense(27, activation='softmax'))
 
 # Compilar o modelo
-model.compile(optimizer='adam',
-              loss='sparse_categorical_crossentropy',
-              metrics=['accuracy'])
+modelo.compile(optimizer='adam',
+               loss='sparse_categorical_crossentropy',
+               metrics=['accuracy'])
 
 # Treinar o modelo
-history = model.fit(train_images, train_labels, epochs=10,
-                    validation_data=(test_images, test_labels))
+historico = modelo.fit(imagens_treino, labels_treino, epochs=10,
+                     validation_data=(imagens_teste, labels_teste))
 
 # Avaliar o desempenho do modelo
-test_loss, test_acc = model.evaluate(test_images, test_labels, verbose=2)
+test_loss, test_acc = modelo.evaluate(imagens_teste, labels_teste, verbose=2)
 print('\nAcurácia do modelo no conjunto de teste:', test_acc)
 
 # Plotar a acurácia e a perda ao longo do treinamento
 plt.figure(figsize=(12, 4))
 plt.subplot(1, 2, 1)
-plt.plot(history.history['accuracy'], label='Acurácia de Treinamento')
-plt.plot(history.history['val_accuracy'], label='Acurácia de Validação')
+plt.plot(historico.history['accuracy'], label='Acurácia de Treinamento')
+plt.plot(historico.history['val_accuracy'], label='Acurácia de Validação')
 plt.xlabel('Época')
 plt.ylabel('Acurácia')
 plt.legend()
 
 plt.subplot(1, 2, 2)
-plt.plot(history.history['loss'], label='Perda de Treinamento')
-plt.plot(history.history['val_loss'], label='Perda de Validação')
+plt.plot(historico.history['loss'], label='Perda de Treinamento')
+plt.plot(historico.history['val_loss'], label='Perda de Validação')
 plt.xlabel('Época')
 plt.ylabel('Perda')
 plt.legend()
 
 plt.show()
 
-model.save(r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\Projeto_TCC\RedeNeural\model_letra_teste2.h5')
+modelo.save(r'D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\Projeto_TCC\RedeNeural\model_letra_teste.h5')

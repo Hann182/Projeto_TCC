@@ -52,15 +52,8 @@ class RetornaClasse:
 
             # Faça a previsão
             predicao = RetornaClasse.modeloCarregado.predict(imagem)
-            predicaoClass = np.argmax(predicao, axis=1)
-            returnLatter = Letra(predicaoClass[0]).name
-            return returnLatter
+            predicaoClasse = np.argmax(predicao, axis=1)
+            retornaLetra = Letra(predicaoClasse[0]).name
+            return retornaLetra
         except:
             raise Exception("Não foi possível ler a imagem.")
-
-
-    # Insira o caminho da imagem que você deseja classificar
-    '''caminho_da_imagem = r"D:\B - UNIP\8 - Semestre\0 - Trabalho de curso II\letras\classificacao\n1.png"
-    classe_predita = prever_letra(caminho_da_imagem)
-
-    print(f'A classe predita para a imagem é: {classe_predita}')'''

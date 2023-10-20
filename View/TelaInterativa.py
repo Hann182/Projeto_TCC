@@ -1,13 +1,17 @@
-from PyQt5.QtWidgets import *
+import cv2, sys, os
+from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
-import cv2, sys, os
+from PyQt5.QtWidgets import *
 from RedeNeural.RetornaClasse import RetornaClasse
 
      
 class Window(QMainWindow):  
     def __init__(self):
         super().__init__()
+
+        self.minha_lista = []
+
         caminho_pasta_imagens = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'View', 'Imagens')
         self.setWindowTitle("Tela Digitalizadora")
         self.setFixedSize(900, 600)
@@ -27,6 +31,18 @@ class Window(QMainWindow):
         self.lado_esquerdo_amarelo.setGeometry(QRect(0, 21, 70, 579))
         self.lado_esquerdo_amarelo.setAutoFillBackground(False)
         self.lado_esquerdo_amarelo.setStyleSheet(u"background-color:#ffffdf; border: 2px solid black")
+
+        self.margem_cinza_esquerda = QLabel(self)
+        self.margem_cinza_esquerda.setObjectName(u"margem_cinza_esquerda")
+        self.margem_cinza_esquerda.setGeometry(QRect(70, 310, 240, 290))
+        self.margem_cinza_esquerda.setAutoFillBackground(False)
+        self.margem_cinza_esquerda.setStyleSheet(u"background-color:#ebebeb")
+
+        self.margem_cinza_direita = QLabel(self)
+        self.margem_cinza_direita.setObjectName(u"margem_cinza_direita")
+        self.margem_cinza_direita.setGeometry(QRect(605, 310, 260, 290))
+        self.margem_cinza_direita.setAutoFillBackground(False)
+        self.margem_cinza_direita.setStyleSheet(u"background-color:#ebebeb")
 
         self.lado_direito_amarelo = QLabel(self)
         self.lado_direito_amarelo.setObjectName(u"lado_direito_amarelo")
@@ -54,11 +70,10 @@ class Window(QMainWindow):
         self.botao_limpar.setIcon(QIcon(os.path.join(caminho_pasta_imagens, 'limpar.png')))
         self.botao_limpar.setIconSize(QSize(48, 48))
         self.botao_limpar.setStyleSheet(u"background-color:#ffffff")
-        
+
         self.botao_espessura = QPushButton(self)
         self.botao_espessura.setGeometry(10, 210, 50, 50)
         self.botao_espessura.clicked.connect(self.show_brush_size_dialog)
-
         self.botao_espessura.setIcon(QIcon(os.path.join(caminho_pasta_imagens, 'espessura.png')))
         self.botao_espessura.setIconSize(QSize(50, 50))
         self.botao_espessura.setStyleSheet(u"background-color:#ffffff")
@@ -76,6 +91,20 @@ class Window(QMainWindow):
         self.botao_borracha.setIcon(QIcon(os.path.join(caminho_pasta_imagens, 'borracha.png')))
         self.botao_borracha.setIconSize(QSize(48, 48))
         self.botao_borracha.setStyleSheet(u"background-color:#ffffff")
+
+        self.botao_lapis = QPushButton(self)
+        self.botao_lapis.setGeometry(10, 390, 50, 50)
+        self.botao_lapis.clicked.connect(self.lapis)
+        self.botao_lapis.setIcon(QIcon(os.path.join(caminho_pasta_imagens, 'lapis.png')))
+        self.botao_lapis.setIconSize(QSize(48, 48))
+        self.botao_lapis.setStyleSheet(u"background-color:#ffffff")
+
+        self.botao_letra_pontilhada = QPushButton(self)
+        self.botao_letra_pontilhada.setGeometry(10, 450, 50, 50)
+        self.botao_letra_pontilhada.clicked.connect(self.mostrar_letra_pontilhada_dialog)
+        self.botao_letra_pontilhada.setIcon(QIcon("pontilhado.png"))
+        self.botao_letra_pontilhada.setIconSize(QSize(50, 50))
+        self.botao_letra_pontilhada.setStyleSheet(u"background-color:#ffffff")
         
         self.label = QLabel(self)
         self.drawing = False
@@ -96,6 +125,10 @@ class Window(QMainWindow):
         file_menu.addAction(clear_action)
         clear_action.triggered.connect(self.clear)
 
+        self.mouse_release_timer = QTimer(self)
+        self.mouse_release_timer.setSingleShot(True)
+        self.mouse_release_timer.timeout.connect(self.after_mouse_release)
+
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
             self.drawing = True
@@ -110,10 +143,13 @@ class Window(QMainWindow):
             self.update()
 
     def mouseReleaseEvent(self, event):
-
         if event.button() == Qt.LeftButton:
             self.drawing = False
-            #self.save()
+            self.mouse_release_timer.start(2500)
+
+    @pyqtSlot()
+    def after_mouse_release(self):
+        self.digitalizar()
 
     def paintEvent(self, event):
         canvasPainter = QPainter(self)
@@ -137,14 +173,9 @@ class Window(QMainWindow):
         imagem = cv2.imread(caminho_screenshot)
         imagem_cortada = imagem[311:600, 310:602]
         cv2.imwrite(caminho_screenshot, imagem_cortada)
-        #comparar_print_imagem()
         self.pixmap = QPixmap(caminho_screenshot)
         self.retornaTextoImagem()
-        '''self.label.setPixmap(self.pixmap)
-        self.label.setGeometry(69, 0, self.pixmap.width(), self.pixmap.height()) 
-        self.show()
-        self.label.setStyleSheet(f"background-image: url({caminho_screenshot})")
-        self.label.setStyleSheet(u"background-color:#ffffff; border : 1px solid black")'''
+
         
     def clear(self):
         self.image.fill(Qt.white)
@@ -159,6 +190,9 @@ class Window(QMainWindow):
     def borracha(self):
         self.brush_color = QColor("#FFFFFF")
 
+    def lapis(self):
+        self.brush_color = QColor("#000000")
+
     def show_brush_size_dialog(self):
         brush_size_dialog = BrushThicknessDialog()
         result = brush_size_dialog.exec_()
@@ -167,17 +201,32 @@ class Window(QMainWindow):
             self.brush_size = brush_size_dialog.get_selected_thickness()
 
     def retornaTextoImagem(self):
+        caminho_pasta_imagens = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'View', 'Imagens')
+        caminho_screenshot = os.path.join(caminho_pasta_imagens, 'screenshot.png')
 
-        caminho_pasta_imagens = os.path.join(os.path.join(os.path.dirname(os.path.dirname(__file__)), 'View', 'Imagens', 'screenshot.png'))
         retornaClasse = RetornaClasse()
-        letraDigitalizada = retornaClasse.prever_letra(caminho_pasta_imagens)
+        letraDigitalizada = retornaClasse.prever_letra(caminho_screenshot)
+        self.minha_lista.append(letraDigitalizada)
+        valores_sem_colchetes = ''.join(str(valor) for valor in self.minha_lista if valor is not None and valor != 'e')
 
         self.tela_digitalizada.setHtml(
             u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
             "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
             "p, li { white-space: pre-wrap; }\n"
             "</style></head><body style=\" font-family:'SimSun'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-            f"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:20pt; font-family: Calibri\">{letraDigitalizada}</span></p></body></html>")
+            f"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:65pt; font-family: Calibri\">{valores_sem_colchetes}</span></p></body></html>")
+
+    def mostrar_letra_pontilhada_dialog(self, letter):
+        letra_pontilhada_dialog = LetraPontilhadaDialog()
+        result = letra_pontilhada_dialog.exec_()
+        image_path = f"letras/{letter}.png"
+        pixmap = QtGui.QPixmap(image_path)
+
+        if not pixmap.isNull():
+            self.tela_digitalizada.setPixmap(pixmap)
+            self.tela_digitalizada.setGeometry(69, 0, pixmap.width(), pixmap.height())
+            self.tela_digitalizada.setStyleSheet("background-color:#ffffff; border: 1px solid black")
+            self.show()
 
 class BrushThicknessDialog(QDialog):
     def __init__(self):
@@ -206,6 +255,29 @@ class BrushThicknessDialog(QDialog):
         for index, radio_button in enumerate(self.radio_buttons):
             if radio_button.isChecked():
                 return [10, 20, 30][index]
+
+
+class LetraPontilhadaDialog(QtWidgets.QDialog):
+    def __init__(self):
+        super().__init__()
+
+        self.setWindowTitle("Escolha uma letra")
+        self.setFixedSize(250, 150)
+
+        layout = QtWidgets.QGridLayout()
+        letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        row, col = 0, 0
+
+        for letter in letters:
+            button = QtWidgets.QPushButton(letter, self)
+            button.clicked.connect(self.accept)
+            layout.addWidget(button, row, col)
+            col += 1
+            if col > 6:
+                col = 0
+                row += 1
+
+        self.setLayout(layout)
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
