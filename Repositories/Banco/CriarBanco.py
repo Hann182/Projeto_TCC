@@ -1,7 +1,7 @@
 import sqlite3
 
-class Sqlite_DB:
-    def init(self, banco = None): # Cria Banco de dados
+class sqlite_db:
+    def init(self, banco = None): # Cria banco de dados
         self.conn = None
         self.cursor = None
 
@@ -34,6 +34,6 @@ class Sqlite_DB:
         cur.execute(query)
         return cur.fetchall()
 
-db = Sqlite_DB("5.db")
+sqlite_db("1.db").cria_tabela()
 
-db.cria_tabela()
+

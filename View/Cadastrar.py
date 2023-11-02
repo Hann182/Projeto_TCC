@@ -1,19 +1,10 @@
-import typing
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
-from PyQt5.Qt import Qt
-from PyQt5.QtCore import pyqtSlot
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import *
-from PyQt5.QtPrintSupport import *
-import os, sys
+import os
 
-sys.path.insert(1, './view')
-
-from View.Cadastro import *
-from Repositories.Banco.Query import Sqlite_DB
+from View.TelaCadastro import *
+from Repositories.Banco.CriarBanco import sqlite_db
 
 class Cadastro(QDialog):
+
     def __init__(self, *args, **argvs):
         super(Cadastro,self).__init__(*args, **argvs)
         self.ui = Ui_cadastro()
@@ -22,7 +13,8 @@ class Cadastro(QDialog):
         self.ui.btnLimpar.clicked.connect(self.limpa)
 
     def add(self):
-        db = Sqlite_DB("./repositories/usuarios_cadastrados.db")
+        caminho_pasta_banco = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories', 'Banco')
+        db = sqlite_db(os.path.join(caminho_pasta_banco, 'banco.db'))
        
         name = self.ui.imName.text()
         passd = self.ui.imPass.text()

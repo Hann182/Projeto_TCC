@@ -105,7 +105,17 @@ class Window(QMainWindow):
         self.botao_letra_pontilhada.setIcon(QIcon(os.path.join(caminho_pasta_imagens, 'pontilhado.png')))
         self.botao_letra_pontilhada.setIconSize(QSize(30, 30))
         self.botao_letra_pontilhada.setStyleSheet(u"background-color:#ffffff")
-        
+
+        '''self.botao_apagar_letra_digitalizada = QPushButton(self)
+        self.botao_apagar_letra_digitalizada.setGeometry(10, 510, 50, 50)
+        self.botao_apagar_letra_digitalizada.clicked.connect(self.apagaLetra)'''
+
+        '''self.botao_aumenta_tamanho_fonte = QPushButton(self)
+        self.botao_aumenta_tamanho_fonte.setGeometry(10, 510, 50, 50)
+        self.botao_aumenta_tamanho_fonte.clicked.connect(self.)
+        '''
+
+
         self.label = QLabel(self)
         self.drawing = False
         self.brush_size = 10
@@ -128,6 +138,7 @@ class Window(QMainWindow):
         self.mouse_release_timer = QTimer(self)
         self.mouse_release_timer.setSingleShot(True)
         self.mouse_release_timer.timeout.connect(self.after_mouse_release)
+
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
@@ -200,26 +211,25 @@ class Window(QMainWindow):
         if result == QDialog.Accepted:
             self.brush_size = brush_size_dialog.get_selected_thickness()
 
+    lista_de_letras = ""
+
     def retornaTextoImagem(self):
+        global lista_de_letras
+
         caminho_pasta_imagens = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'View', 'Imagens')
         caminho_screenshot = os.path.join(caminho_pasta_imagens, 'screenshot.png')
 
         retornaClasse = RetornaClasse()
         letraDigitalizada = retornaClasse.prever_letra(caminho_screenshot)
         self.minha_lista.append(letraDigitalizada)
-        valores_sem_colchetes = ''.join(str(valor) for valor in self.minha_lista if valor is not None and valor != 'e')
+        lista_de_letras = ''.join(str(valor) for valor in self.minha_lista if valor is not None and valor != 'e')
+        self.tela_digitalizada.setPlainText(lista_de_letras)
+        self.tela_digitalizada.setStyleSheet("font: 65pt 'Calibri';")
 
-        self.tela_digitalizada.setHtml(
-            u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-            "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-            "p, li { white-space: pre-wrap; }\n"
-            "</style></head><body style=\" font-family:'SimSun'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-            f"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:65pt; font-family: Calibri\">{valores_sem_colchetes}</span></p></body></html>")
-
-    def mostrar_letra_pontilhada_dialog(self, letter):
+    def mostrar_letra_pontilhada_dialog(self, letra):
         letra_pontilhada_dialog = LetraPontilhadaDialog()
         result = letra_pontilhada_dialog.exec_()
-        image_path = f"letras/{letter}.png"
+        image_path = f"letras/{letra}.png"
         pixmap = QtGui.QPixmap(image_path)
 
         if not pixmap.isNull():
@@ -227,6 +237,16 @@ class Window(QMainWindow):
             self.tela_digitalizada.setGeometry(69, 0, pixmap.width(), pixmap.height())
             self.tela_digitalizada.setStyleSheet("background-color:#ffffff; border: 1px solid black")
             self.show()
+
+    def apagaLetra(self):
+        #self.tela_digitalizada.setStyleSheet("font-size: 50px;")
+        #self.tela_digitalizada.setPlainText("aaaaaaAaaa")
+        global lista_de_letras
+        lista_de_letras = lista_de_letras[:-1]
+        self.minha_lista.pop(-1)
+        self.tela_digitalizada.setPlainText(lista_de_letras)
+        self.tela_digitalizada.setStyleSheet("font: 65pt 'Calibri';")
+
 
 class BrushThicknessDialog(QDialog):
     def __init__(self):

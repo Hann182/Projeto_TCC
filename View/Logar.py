@@ -1,18 +1,10 @@
-import typing
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
-from PyQt5.Qt import Qt
-from PyQt5.QtCore import pyqtSlot
-from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import *
-from PyQt5.QtPrintSupport import *
 import os, sys
 
 sys.path.insert(1, './view')
 
 from View.TelaLogin import *
 from Cadastrar import Cadastro
-from Repositories.Banco.Query import Sqlite_DB
+from Repositories.Banco.CriarBanco import sqlite_db
 from View.TelaInterativa import Window
 
 class Login(QDialog):
@@ -25,7 +17,8 @@ class Login(QDialog):
         self.ui.btnApagar.clicked.connect(self.limpar)
         
     def login(self):
-        db = Sqlite_DB("usuarios_cadastrados.db")
+        caminho_pasta_banco = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories', 'Banco')
+        db = sqlite_db(os.path.join(caminho_pasta_banco, 'banco.db'))
 
         user = self.ui.imName.text()
         passd = self.ui.ImPassword.text()
