@@ -1,6 +1,6 @@
 import os, sys
 
-sys.path.insert(1, './view')
+#sys.path.insert(1, './view')
 
 from View.TelaLogin import *
 from Cadastrar import Cadastro
@@ -35,8 +35,8 @@ class Login(QDialog):
                 QMessageBox.information(QMessageBox(), 'Login invalido', 'Senha ou usuario incorreto')
 
     def limpar(self):
-        self.ui.imName.clear()
-        self.ui.ImPassword.clear()
+        self.ui.imName.limpar_tela()
+        self.ui.ImPassword.limpar_tela()
 
     def cadastro(self):
         self.window = Cadastro()

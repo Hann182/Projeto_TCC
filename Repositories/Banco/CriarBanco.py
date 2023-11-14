@@ -1,14 +1,15 @@
+import os
 import sqlite3
 
 class sqlite_db:
-    def init(self, banco = None): # Cria banco de dados
+    def __init__(self, banco=None): # Cria banco de dados
         self.conn = None
         self.cursor = None
 
         if banco:
             self.open(banco)
 
-    def open(self,banco):
+    def open(self, banco):
         try:
             self.conn = sqlite3.connect(banco)
             self.cursor = self.conn.cursor()
@@ -30,10 +31,11 @@ class sqlite_db:
         self.conn.commit()
 
     def dados(self,query):
-        cur= self.cursor
+        cur=self.cursor
         cur.execute(query)
         return cur.fetchall()
 
-sqlite_db("1.db").cria_tabela()
+caminho_pasta_banco = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories', 'Banco')
+db = sqlite_db(os.path.join(caminho_pasta_banco, 'banco.db'))
 
-
+db.cria_tabela()
