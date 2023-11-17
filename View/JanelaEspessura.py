@@ -4,7 +4,7 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
 
-class BrushThicknessDialog(QDialog):
+class JanelaEspessura(QDialog):
     def __init__(self):
         super().__init__()
 
@@ -27,7 +27,7 @@ class BrushThicknessDialog(QDialog):
         layout.addWidget(button)
         self.setLayout(layout)
 
-    def get_selected_thickness(self):
+    def recebeEspessuraSelecionada(self):
         for index, radio_button in enumerate(self.radio_buttons):
             if radio_button.isChecked():
                 return [10, 20, 30][index]

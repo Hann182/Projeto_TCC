@@ -3,7 +3,7 @@ from PyQt5.QtWidgets import QPushButton, QDialog, QGridLayout
 from PyQt5.QtGui import QPixmap
 
 
-class LetraPontilhadaDialog(QDialog):
+class JanelaLetraPontilhada(QDialog):
     def __init__(self):
         super().__init__()
 
@@ -18,7 +18,7 @@ class LetraPontilhadaDialog(QDialog):
             button = QPushButton(letra, self)
             button.setMaximumWidth(30)
             button.setMaximumHeight(30)
-            button.clicked.connect(lambda _, letra=letra: self.set_letra_selecionada(letra))
+            button.clicked.connect(lambda _, letra=letra: self.exibeLetraSelecionada(letra))
             layout.addWidget(button, row, col)
             col += 1
 
@@ -28,6 +28,6 @@ class LetraPontilhadaDialog(QDialog):
 
         self.setLayout(layout)
 
-    def set_letra_selecionada(self, letra):
+    def exibeLetraSelecionada(self, letra):
         self.letra_selecionada = letra
         self.accept()

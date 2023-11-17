@@ -43,7 +43,7 @@ class RetornaClasse:
 
     # Função para fazer previsões em uma imagem
     @staticmethod
-    def prever_letra(imagem):
+    def preverLetra(imagem):
         try:
             imagem = cv2.imread(imagem, cv2.IMREAD_GRAYSCALE)
             imagem = cv2.resize(imagem, (28, 28))
@@ -52,8 +52,8 @@ class RetornaClasse:
 
             # Faça a previsão
             predicao = RetornaClasse.modeloCarregado.predict(imagem)
-            predicaoClasse = np.argmax(predicao, axis=1)
-            retornaLetra = Letra(predicaoClasse[0]).name
-            return retornaLetra
+            predicao_classe = np.argmax(predicao, axis=1)
+            retorna_letra = Letra(predicao_classe[0]).name
+            return retorna_letra
         except:
             raise Exception("Não foi possível ler a imagem.")

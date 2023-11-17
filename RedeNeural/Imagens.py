@@ -9,13 +9,13 @@ class TipoImagem(Enum):
 
 class Imagens():
 
-    caminhoTreinoImagens = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories', 'ImagensDaRedeNeural', 'train_images')
-    caminhoTesteImagens = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories', 'ImagensDaRedeNeural', 'test_images')
-    caminhoTreinoLabels = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories','ImagensDaRedeNeural', 'train_labels')
-    caminhoTesteLabels = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories', 'ImagensDaRedeNeural', 'test_labels')
+    caminho_treino_imagens = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories', 'ImagensDaRedeNeural', 'train_images')
+    caminho_teste_imagens = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories', 'ImagensDaRedeNeural', 'test_images')
+    caminho_treino_labels = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories', 'ImagensDaRedeNeural', 'train_labels')
+    caminho_teste_labels = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories', 'ImagensDaRedeNeural', 'test_labels')
 
     # Crie listas para armazenar as imagens e rótulos
-    def Formata_imagem_e_rotulos(self, diretorio_raiz, tipoImagem):
+    def formataImagemERotulo(self, diretorio_raiz, tipo_imagem):
         imagens = []
         rotulos = []
 
@@ -38,11 +38,11 @@ class Imagens():
         rotulos = np.array(rotulos)
 
         # Salvando na pasta devida
-        if(tipoImagem == TipoImagem.treino):
-            np.save(os.path.join(Imagens.caminhoTreinoImagens, 'formatoNumpy', 'train_images_npy'), imagens)
-            np.save(os.path.join(Imagens.caminhoTreinoLabels, 'formatoNumpy', 'train_labels_npy'), rotulos)
+        if(tipo_imagem == TipoImagem.treino):
+            np.save(os.path.join(Imagens.caminho_treino_imagens, 'formatoNumpy', 'train_images_npy'), imagens)
+            np.save(os.path.join(Imagens.caminho_treino_labels, 'formatoNumpy', 'train_labels_npy'), rotulos)
 
-        elif(tipoImagem == TipoImagem.teste):
-            np.save(os.path.join(Imagens.caminhoTesteImagens, 'formatoNumpy', 'test_images_npy'), imagens)
-            np.save(os.path.join(Imagens.caminhoTesteLabels, 'formatoNumpy', 'test_labels_npy'), rotulos)
+        elif(tipo_imagem == TipoImagem.teste):
+            np.save(os.path.join(Imagens.caminho_teste_imagens, 'formatoNumpy', 'test_images_npy'), imagens)
+            np.save(os.path.join(Imagens.caminho_teste_labels, 'formatoNumpy', 'test_labels_npy'), rotulos)
 

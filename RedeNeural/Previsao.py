@@ -6,25 +6,25 @@ from keras import layers, models
 from Imagens import Imagens, TipoImagem
 
 # Pega os diretórios onde estão localizadas as pastas de treino e teste para formatá-las no modelo correto
-caminhoTreinoImagens = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories', 'ImagensDaRedeNeural', 'train_images')
-caminhoTesteImagens = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories', 'ImagensDaRedeNeural', 'test_images')
-caminhoTreinoLabels = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories', 'ImagensDaRedeNeural', 'train_labels')
-caminhoTesteLabels = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories', 'ImagensDaRedeNeural', 'test_labels')
+caminho_treino_imagens = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories', 'ImagensDaRedeNeural', 'train_images')
+caminho_teste_imagens = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories', 'ImagensDaRedeNeural', 'test_images')
+caminho_treino_labels = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories', 'ImagensDaRedeNeural', 'train_labels')
+caminho_teste_labels = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'Repositories', 'ImagensDaRedeNeural', 'test_labels')
 
-dir_imagem_treino = os.path.join(caminhoTreinoImagens, 'formatoPNG')
-dir_imagem_teste = os.path.join(caminhoTesteImagens, 'formatoPNG')
+dir_imagem_treino = os.path.join(caminho_treino_imagens, 'formatoPNG')
+dir_imagem_teste = os.path.join(caminho_teste_imagens, 'formatoPNG')
 
 imagens = Imagens()
 
-imagens.Formata_imagem_e_rotulos(dir_imagem_treino, TipoImagem.treino)
-imagens.Formata_imagem_e_rotulos(dir_imagem_teste, TipoImagem.teste)
+imagens.formataImagemERotulo(dir_imagem_treino, TipoImagem.treino)
+imagens.formataImagemERotulo(dir_imagem_teste, TipoImagem.teste)
 
 
 # Pega as imagens do tipo npy e as carrega para dentro de variáveis
-imagens_treino = np.load(os.path.join(caminhoTreinoImagens, 'formatoNumpy', 'train_images_npy.npy'))
-labels_treino = np.load(os.path.join(caminhoTreinoLabels, 'formatoNumpy', 'train_labels_npy.npy'))
-imagens_teste = np.load(os.path.join(caminhoTesteImagens, 'formatoNumpy', 'test_images_npy.npy'))
-labels_teste = np.load(os.path.join(caminhoTesteLabels, 'formatoNumpy', 'test_labels_npy.npy'))
+imagens_treino = np.load(os.path.join(caminho_treino_imagens, 'formatoNumpy', 'train_images_npy.npy'))
+labels_treino = np.load(os.path.join(caminho_treino_labels, 'formatoNumpy', 'train_labels_npy.npy'))
+imagens_teste = np.load(os.path.join(caminho_teste_imagens, 'formatoNumpy', 'test_images_npy.npy'))
+labels_teste = np.load(os.path.join(caminho_teste_labels, 'formatoNumpy', 'test_labels_npy.npy'))
 
 '''print(len(imagens_treino))
 print(len(labels_treino))

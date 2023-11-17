@@ -35,8 +35,8 @@ class Login(QDialog):
                 QMessageBox.information(QMessageBox(), 'Login invalido', 'Senha ou usuario incorreto')
 
     def limpar(self):
-        self.ui.imName.limpar_tela()
-        self.ui.ImPassword.limpar_tela()
+        self.ui.imName.limparTela()
+        self.ui.ImPassword.limparTela()
 
     def cadastro(self):
         self.window = Cadastro()
