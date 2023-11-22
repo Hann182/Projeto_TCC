@@ -6,8 +6,6 @@ from RedeNeural.RetornaClasse import RetornaClasse
 from JanelaEspessura import JanelaEspessura
 from JanelaLetraPontilhada import JanelaLetraPontilhada
 
-
-# Variáveis globais
 lista_de_letras = []
      
 class Window(QMainWindow):  
