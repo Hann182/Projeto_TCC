@@ -27,19 +27,19 @@ class Window(QMainWindow):
         
         self.borda_topo = QLabel(self)
         self.borda_topo.setGeometry(QRect(315, 320, 300, 1))
-        self.borda_topo.setStyleSheet(u"background-color:#000000")
+        self.borda_topo.setStyleSheet(u"background-color:#808080")
         
         self.borda_baixo = QLabel(self)
         self.borda_baixo.setGeometry(QRect(315, 620, 300, 1))
-        self.borda_baixo.setStyleSheet(u"background-color:#000000")
+        self.borda_baixo.setStyleSheet(u"background-color:#808080")
         
         self.borda_esquerda = QLabel(self)
         self.borda_esquerda.setGeometry(QRect(315, 320, 1, 300))
-        self.borda_esquerda.setStyleSheet(u"background-color:#000000")
+        self.borda_esquerda.setStyleSheet(u"background-color:#808080")
         
         self.borda_direita = QLabel(self)
         self.borda_direita.setGeometry(QRect(615, 320, 1, 301))
-        self.borda_direita.setStyleSheet(u"background-color:#000000")
+        self.borda_direita.setStyleSheet(u"background-color:#808080")
 
         self.tela_digitalizada = QTextBrowser(self)
         self.tela_digitalizada.setObjectName(u"tela_digitalizada")
