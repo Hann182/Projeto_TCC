@@ -52,26 +52,33 @@ class Window(QMainWindow):
         self.tela_digitalizada.setStyleSheet(u"background-color:#ffffff; border: 1px solid gray")
 
 #botões da tela de cima (digitalizada)
-        self.exportar_texto = QPushButton(self)
-        self.exportar_texto.setGeometry(10, 65, 35, 35)
-        self.exportar_texto.clicked.connect(self.exportarParaTxt)
-        self.exportar_texto.setIcon(QIcon(os.path.join(caminho_pasta_imagens, 'salvar_arquivo_como_texto.png')))
-        self.exportar_texto.setIconSize(QSize(30, 30))
-        self.exportar_texto.setStyleSheet(u"background-color:#ffffff")
+        self.botao_exportar_texto = QPushButton(self)
+        self.botao_exportar_texto.setGeometry(10, 40, 35, 35)
+        self.botao_exportar_texto.clicked.connect(self.salvarDocumento)
+        self.botao_exportar_texto.setIcon(QIcon(os.path.join(caminho_pasta_imagens, 'salvar_arquivo_como_texto.png')))
+        self.botao_exportar_texto.setIconSize(QSize(30, 30))
+        self.botao_exportar_texto.setStyleSheet(u"background-color:#ffffff")
         
         self.botao_apagar_letra_digitalizada = QPushButton(self)
-        self.botao_apagar_letra_digitalizada.setGeometry(10, 110, 35, 35)
+        self.botao_apagar_letra_digitalizada.setGeometry(10, 85, 35, 35)
         self.botao_apagar_letra_digitalizada.clicked.connect(self.apagarLetra)
         self.botao_apagar_letra_digitalizada.setIcon(QIcon(os.path.join(caminho_pasta_imagens, 'borracha_escrita.png')))
         self.botao_apagar_letra_digitalizada.setIconSize(QSize(40, 40))
         self.botao_apagar_letra_digitalizada.setStyleSheet(u"background-color:#ffffff")
 
         self.botao_digitalizar = QPushButton(self)
-        self.botao_digitalizar.setGeometry(10, 155, 35, 35)
+        self.botao_digitalizar.setGeometry(10, 130, 35, 35)
         self.botao_digitalizar.clicked.connect(self.digitalizar)
         self.botao_digitalizar.setIcon(QIcon(os.path.join(caminho_pasta_imagens, 'print.png')))
         self.botao_digitalizar.setIconSize(QSize(30, 30))
         self.botao_digitalizar.setStyleSheet(u"background-color:#ffffff")
+
+        self.botao_abrir_novo_documento = QPushButton(self)
+        self.botao_abrir_novo_documento.setGeometry(10, 175, 35, 35)
+        self.botao_abrir_novo_documento.clicked.connect(self.abrirNovoDocumento)
+        self.botao_abrir_novo_documento.setIcon(QIcon(os.path.join(caminho_pasta_imagens, 'novo_documento.png')))
+        self.botao_abrir_novo_documento.setIconSize(QSize(30, 30))
+        self.botao_abrir_novo_documento.setStyleSheet(u"background-color:#ffffff")
 
         self.borda_direita = QLabel(self)
         self.borda_direita.setGeometry(QRect(5, 230, 45, 1))
@@ -258,19 +265,57 @@ class Window(QMainWindow):
             self.tela_digitalizada.setPlainText(lista_de_letras)
             self.tela_digitalizada.setStyleSheet("font: 65pt 'Calibri'; background-color:#ffffff;")
 
-    def exportarParaTxt(self):
+    def salvarDocumento(self):
         global lista_de_letras
 
-        opcoes = QFileDialog.Options()
-        opcoes |= QFileDialog.DontUseNativeDialog
         caminho_do_arquivo, _ = QFileDialog.getSaveFileName(self, "Salvar Arquivo TXT", "",
-                                                            "Arquivos de Texto (*.txt);;Todos os Arquivos (*)",
-                                                            options=opcoes)
+                                                            "Arquivos de Texto (*.txt);;Todos os Arquivos (*)")
 
         if caminho_do_arquivo:
             with open(caminho_do_arquivo, 'w') as arquivo_txt:
                 for letra in lista_de_letras:
                     arquivo_txt.write(f"{letra}")
+
+        mensagem = QMessageBox()
+        mensagem.setText("Documento salvo com sucesso!")
+        mensagem.setWindowTitle('Salvamento concluído')
+        mensagem.setStandardButtons(QMessageBox.Ok)
+        return mensagem.exec_()
+
+
+    def perguntaSobreAbrirNovoDocumento(self):
+        global lista_de_letras
+        if len(lista_de_letras) == 0:
+            mensagem = QMessageBox()
+            mensagem.setText("O documento já está em branco")
+            mensagem.setWindowTitle('Não há alterações no documento')
+            mensagem.setStandardButtons(QMessageBox.Ok)
+            return mensagem.exec_()
+        else:
+            mensagem = QMessageBox()
+            mensagem.setWindowTitle('Salvar Alterações')
+            mensagem.setText('Deseja salvar as alterações do documento atual?')
+            mensagem.setStandardButtons(QMessageBox.Save | QMessageBox.No)
+            return mensagem.exec_()
+
+
+    def abrirNovoDocumento(self):
+        global lista_de_letras
+        resposta = self.perguntaSobreAbrirNovoDocumento()
+        if resposta == QMessageBox.Ok:
+            return
+        if resposta == QMessageBox.Save:
+            self.salvarDocumento()
+            lista_de_letras = ""
+            self.minha_lista.clear()
+            self.tela_digitalizada.setPlainText(lista_de_letras)
+            self.tela_digitalizada.setStyleSheet("font: 65pt 'Calibri'; background-color:#ffffff;")
+        if resposta == QMessageBox.No:
+            lista_de_letras = ""
+            self.minha_lista.clear()
+            self.tela_digitalizada.setPlainText(lista_de_letras)
+            self.tela_digitalizada.setStyleSheet("font: 65pt 'Calibri'; background-color:#ffffff;")
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
