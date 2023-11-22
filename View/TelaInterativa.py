@@ -62,7 +62,7 @@ class Window(QMainWindow):
         self.botao_apagar_letra_digitalizada = QPushButton(self)
         self.botao_apagar_letra_digitalizada.setGeometry(10, 110, 35, 35)
         self.botao_apagar_letra_digitalizada.clicked.connect(self.apagarLetra)
-        self.botao_apagar_letra_digitalizada.setIcon(QIcon(os.path.join(caminho_pasta_imagens, 'apaga_letra_digitalizada.png')))
+        self.botao_apagar_letra_digitalizada.setIcon(QIcon(os.path.join(caminho_pasta_imagens, 'borracha_escrita.png')))
         self.botao_apagar_letra_digitalizada.setIconSize(QSize(40, 40))
         self.botao_apagar_letra_digitalizada.setStyleSheet(u"background-color:#ffffff")
 
@@ -88,7 +88,7 @@ class Window(QMainWindow):
         self.botao_borracha = QPushButton(self)
         self.botao_borracha.setGeometry(10, 330, 35, 35)
         self.botao_borracha.clicked.connect(self.borracha)
-        self.botao_borracha.setIcon(QIcon(os.path.join(caminho_pasta_imagens, 'borracha.png')))
+        self.botao_borracha.setIcon(QIcon(os.path.join(caminho_pasta_imagens, 'borracha_lapis.png')))
         self.botao_borracha.setIconSize(QSize(30, 30))
         self.botao_borracha.setStyleSheet(u"background-color:#ffffff")
 
