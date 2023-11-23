@@ -282,11 +282,11 @@ class Window(QMainWindow):
                 for letra in lista_de_letras:
                     arquivo_txt.write(f"{letra}")
 
-        mensagem = QMessageBox()
-        mensagem.setText("Documento salvo com sucesso!")
-        mensagem.setWindowTitle('Salvamento concluído')
-        mensagem.setStandardButtons(QMessageBox.Ok)
-        return mensagem.exec_()
+            mensagem = QMessageBox()
+            mensagem.setText("Documento salvo com sucesso!")
+            mensagem.setWindowTitle('Salvamento concluído')
+            mensagem.setStandardButtons(QMessageBox.Ok)
+            mensagem.exec_()
 
 
     def perguntaSobreAbrirNovoDocumento(self):
