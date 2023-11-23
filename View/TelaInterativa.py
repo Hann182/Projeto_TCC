@@ -6,20 +6,20 @@ from RedeNeural.RetornaClasse import RetornaClasse
 from JanelaEspessura import JanelaEspessura
 from JanelaLetraPontilhada import JanelaLetraPontilhada
 
-lista_de_letras = []
+lista_de_letras = [] 
      
 class Window(QMainWindow):  
     def __init__(self):
         super().__init__()
 
         self.minha_lista = []
-
         self.last_point = None
+        self.status_borracha = False
 
         caminho_pasta_imagens = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'View', 'Imagens')
         self.setWindowTitle("Tela Digitalizadora")
         self.setFixedSize(900, 630)
-        self.setStyleSheet("background-color: #ABDBED;")
+        self.setStyleSheet("background-color: #CAE3FB;")
         self.setWindowIcon(QIcon(os.path.join(caminho_pasta_imagens, 'download.png')))
 
         self.image = QPixmap(300, 300)
@@ -82,7 +82,7 @@ class Window(QMainWindow):
 
         self.borda_direita = QLabel(self)
         self.borda_direita.setGeometry(QRect(5, 230, 45, 1))
-        self.borda_direita.setStyleSheet(u"background-color:#ABDBED")
+        self.borda_direita.setStyleSheet(u"background-color:#CAE3FB")
 
 #botões da tela de baixo (desenho)
         self.botao_lapis = QPushButton(self)
@@ -156,10 +156,15 @@ class Window(QMainWindow):
         if event.button() == Qt.LeftButton:
             self.drawing = False
             self.mouse_release_timer.start(2500)
+            
 
     @pyqtSlot()
     def afterMouseRelease(self):
-        self.digitalizar()
+        if self.status_borracha == True:
+            print(self.status_borracha)
+        else:
+            print(self.status_borracha)
+            self.digitalizar()
 
     def paintEvent(self, event):
         painter = QPainter(self)
@@ -201,7 +206,6 @@ class Window(QMainWindow):
 
     def setarImagem(self, imagem_na_tela_label):
         if not imagem_na_tela_label.isNull():
-            # self.image = QPixmap(imagem_na_tela_label)
             self.image = imagem_na_tela_label.scaled(300, 300, Qt.KeepAspectRatio)
             self.update()
 
@@ -212,9 +216,11 @@ class Window(QMainWindow):
             self.brush_color = cor
             
     def borracha(self):
+        self.status_borracha = True
         self.brush_color = QColor("#FFFFFF")
 
     def lapis(self):
+        self.status_borracha = False
         self.brush_color = QColor("#000000")
 
     def mostrarEspessuraLapis(self):
