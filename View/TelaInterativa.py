@@ -2,7 +2,7 @@ import cv2, sys, os
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import *
-from RedeNeural.RetornaClasse import RetornaClasse
+from Projeto_TCC.RedeNeural.RetornaClasse import RetornaClasse
 from JanelaEspessura import JanelaEspessura
 from JanelaLetraPontilhada import JanelaLetraPontilhada
 
@@ -160,10 +160,7 @@ class Window(QMainWindow):
 
     @pyqtSlot()
     def afterMouseRelease(self):
-        if self.status_borracha == True:
-            print(self.status_borracha)
-        else:
-            print(self.status_borracha)
+        if self.status_borracha == False:
             self.digitalizar()
 
     def paintEvent(self, event):
@@ -287,7 +284,6 @@ class Window(QMainWindow):
             mensagem.setWindowTitle('Salvamento concluído')
             mensagem.setStandardButtons(QMessageBox.Ok)
             mensagem.exec_()
-
 
     def perguntaSobreAbrirNovoDocumento(self):
         global lista_de_letras
