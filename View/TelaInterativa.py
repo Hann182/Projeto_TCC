@@ -318,7 +318,6 @@ class Window(QMainWindow):
             self.tela_digitalizada.setPlainText(lista_de_letras)
             self.tela_digitalizada.setStyleSheet("font: 65pt 'Calibri'; background-color:#ffffff;")
 
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = Window()
